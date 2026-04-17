@@ -1,0 +1,1195 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anonymous Boundary Survey</title>
+  <style>
+    :root {
+      --bg-1: #efe9ff;
+      --bg-2: #e3d8ff;
+      --panel: #ffffff;
+      --panel-soft: #f6f1ff;
+      --text: #23193a;
+      --muted: #5d5078;
+      --line: #d5c8ef;
+      --accent: #6d3fd6;
+      --accent-2: #8c61eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      color: var(--text);
+      line-height: 1.45;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(140, 97, 235, 0.18) 0%, rgba(140, 97, 235, 0) 40%),
+        radial-gradient(circle at 85% 0%, rgba(109, 63, 214, 0.16) 0%, rgba(109, 63, 214, 0) 38%),
+        linear-gradient(165deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 14px 44px;
+    }
+
+    .hero {
+      background: linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 26px rgba(61, 30, 120, 0.08);
+    }
+
+    .logo {
+      display: block;
+      width: 96px;
+      height: auto;
+      margin: 0 auto 10px;
+      filter: drop-shadow(0 4px 8px rgba(70, 34, 134, 0.2));
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      text-align: center;
+      letter-spacing: 0.2px;
+      color: #3a236d;
+    }
+
+    .intro,
+    .privacy,
+    .terms,
+    .scale-note {
+      margin: 6px 0;
+      font-size: 0.98rem;
+    }
+
+    .privacy,
+    .terms {
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .definition-line {
+      margin: 6px 0;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+    }
+
+    .privacy {
+      color: #7a7394;
+      font-size: 0.82rem;
+      line-height: 1.35;
+      margin-top: 4px;
+      margin-bottom: 0;
+    }
+
+    .terms,
+    .scale-def,
+    .discussion-def {
+      background: #eef8ef;
+      border: 1px solid #c8e3cb;
+      color: #2d6641;
+    }
+
+    .scale-note {
+      color: var(--muted);
+    }
+
+    .category {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      box-shadow: 0 5px 14px rgba(74, 33, 145, 0.06);
+    }
+
+    .scale-toolbar {
+      position: sticky;
+      top: 8px;
+      z-index: 30;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      padding: 8px 10px;
+      border: 1px solid #c8e3cb;
+      border-radius: 10px;
+      background: rgba(238, 248, 239, 0.96);
+      color: #2d6641;
+      box-shadow: 0 6px 16px rgba(45, 102, 65, 0.14);
+      backdrop-filter: blur(2px);
+    }
+
+    .scale-toolbar.visible {
+      display: flex;
+    }
+
+    .scale-toolbar strong {
+      font-size: 0.86rem;
+      white-space: nowrap;
+    }
+
+    .scale-toolbar-track {
+      display: grid;
+      grid-template-columns: repeat(5, auto);
+      gap: 4px;
+      margin-left: auto;
+      margin-right: 2px;
+    }
+
+    .scale-toolbar-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.6rem;
+      padding: 0.16rem 0.3rem;
+      border-radius: 999px;
+      border: 1px solid #b8d9bc;
+      background: #ffffff;
+      font-size: 0.72rem;
+      line-height: 1;
+      color: #2d6641;
+    }
+
+    .scale-toolbar-hint {
+      font-size: 0.76rem;
+      color: #3d7e50;
+      white-space: nowrap;
+    }
+
+    .category h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+
+    .question {
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .question:first-of-type {
+      border-top: 0;
+      margin-top: 8px;
+    }
+
+    .q-label {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 4px;
+      color: #3a2c5b;
+      font-size: 0.82rem;
+    }
+
+    .options label {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      white-space: nowrap;
+      padding: 0.32rem 0.16rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #faf7ff;
+      cursor: pointer;
+      min-height: 1.85rem;
+      transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+    }
+
+    .options label:has(input[value=""]) {
+      opacity: 0.88;
+      justify-self: start;
+      width: max-content;
+      padding-inline: 0.28rem;
+    }
+
+    .options input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .options label:hover {
+      background: #f3ebff;
+      border-color: #bda8eb;
+      transform: translateY(-1px);
+    }
+
+    .options label:has(input:checked) {
+      background: linear-gradient(180deg, var(--accent-2) 0%, var(--accent) 100%);
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 6px 14px rgba(91, 47, 182, 0.22);
+    }
+
+    .options label:has(input:focus-visible) {
+      outline: 2px solid #1f0f42;
+      outline-offset: 2px;
+    }
+
+    .discussion-toggle {
+      margin-left: auto;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid #cdbde9;
+      border-radius: 999px;
+      background: #f6f1ff;
+      color: var(--accent);
+      font: inherit;
+      font-size: 0.68rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
+    }
+
+    .discussion-toggle:hover {
+      background: #ede4ff;
+      border-color: #b89fe6;
+    }
+
+    .discussion-toggle[aria-pressed="true"] {
+      background: linear-gradient(180deg, var(--accent-2) 0%, var(--accent) 100%);
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 6px 14px rgba(91, 47, 182, 0.18);
+    }
+
+    .actions {
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: linear-gradient(180deg, var(--accent-2) 0%, var(--accent) 100%);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 8px 16px rgba(91, 47, 182, 0.25);
+    }
+
+    button:hover {
+      filter: brightness(1.05);
+    }
+
+    @media (max-width: 700px) {
+      h1 {
+        font-size: 1.7rem;
+      }
+
+      .scale-toolbar {
+        top: 6px;
+        gap: 4px;
+        padding: 6px 7px;
+      }
+
+      .scale-toolbar strong {
+        font-size: 0.72rem;
+      }
+
+      .scale-toolbar-pill {
+        min-width: 1.36rem;
+        font-size: 0.64rem;
+      }
+
+      .scale-toolbar-hint {
+        font-size: 0.62rem;
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+
+      .options {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 3px;
+        font-size: 0.76rem;
+      }
+
+      .options label {
+        padding: 0.24rem 0.1rem;
+        min-height: 1.65rem;
+      }
+
+      .options label:has(input[value=""]) {
+        opacity: 0.88;
+      }
+
+      .discussion-toggle {
+        font-size: 0.62rem;
+        padding: 0.18rem 0.42rem;
+      }
+
+      .hero,
+      .category {
+        border-radius: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <img class="logo" src="RA_logo.svg" alt="Relationship Anarchy logo">
+      <h1>Anonymous Boundary Survey</h1>
+      <p class="intro">You can skip any question. Each item is a self-assessment, not a test.</p>
+      <p class="terms definition-line"><strong>Term: star</strong> = a person who is important to you (romantic,
+        platonic, familial, sexual, queerplatonic, or otherwise). In an ideal non-hierarchical world I might use one
+        umbrella word for every meaningful connection, but in lived society words like friends, partners, family, and
+        lovers still carry different meanings, so I keep those words when the distinction matters.</p>
+      <p class="privacy">Privacy: no login, no cookies, no IP address logging, no timestamp, no session storage. Answers
+        are saved only in a CSV file on Ju's private web server.</p>
+    </section>
+
+    <div id="scaleToolbar" class="scale-toolbar" aria-live="polite">
+      <strong>Scale quick guide</strong>
+      <div class="scale-toolbar-track" aria-hidden="true">
+        <span class="scale-toolbar-pill">1</span>
+        <span class="scale-toolbar-pill">2</span>
+        <span class="scale-toolbar-pill">3</span>
+        <span class="scale-toolbar-pill">4</span>
+        <span class="scale-toolbar-pill">5</span>
+      </div>
+      <span class="scale-toolbar-hint">1 = disagree, 5 = agree, N/A = no answer</span>
+    </div>
+
+    <form method="POST" action="submit.php">
+      <section class="category" aria-labelledby="cat-values">
+        <h2 id="cat-values">Values, Orientation &amp; Autonomy</h2>
+
+        <div class="question">
+          <label class="q-label" for="q01_na">I feel uncomfortable when someone expects one default relationship
+            template to fit us.</label>
+          <div class="options">
+            <label><input id="q01_na" type="radio" name="q01" value="" checked>N/A</label>
+            <label><input type="radio" name="q01" value="1">1</label>
+            <label><input type="radio" name="q01" value="2">2</label>
+            <label><input type="radio" name="q01" value="3">3</label>
+            <label><input type="radio" name="q01" value="4">4</label>
+            <label><input type="radio" name="q01" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q02_na">I would not like it if someone treated one default relationship script as
+            the only valid way to relate to me.</label>
+          <div class="options">
+            <label><input id="q02_na" type="radio" name="q02" value="" checked>N/A</label>
+            <label><input type="radio" name="q02" value="1">1</label>
+            <label><input type="radio" name="q02" value="2">2</label>
+            <label><input type="radio" name="q02" value="3">3</label>
+            <label><input type="radio" name="q02" value="4">4</label>
+            <label><input type="radio" name="q02" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q03_na">I am comfortable saying no to a request even when the relationship is
+            emotionally close.</label>
+          <div class="options">
+            <label><input id="q03_na" type="radio" name="q03" value="" checked>N/A</label>
+            <label><input type="radio" name="q03" value="1">1</label>
+            <label><input type="radio" name="q03" value="2">2</label>
+            <label><input type="radio" name="q03" value="3">3</label>
+            <label><input type="radio" name="q03" value="4">4</label>
+            <label><input type="radio" name="q03" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q04_na">I feel uneasy when agreements are used to control outcomes instead of
+            protect autonomy.</label>
+          <div class="options">
+            <label><input id="q04_na" type="radio" name="q04" value="" checked>N/A</label>
+            <label><input type="radio" name="q04" value="1">1</label>
+            <label><input type="radio" name="q04" value="2">2</label>
+            <label><input type="radio" name="q04" value="3">3</label>
+            <label><input type="radio" name="q04" value="4">4</label>
+            <label><input type="radio" name="q04" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q05_na">I would push back if people treated group norms as more important than a
+            boundary I set.</label>
+          <div class="options">
+            <label><input id="q05_na" type="radio" name="q05" value="" checked>N/A</label>
+            <label><input type="radio" name="q05" value="1">1</label>
+            <label><input type="radio" name="q05" value="2">2</label>
+            <label><input type="radio" name="q05" value="3">3</label>
+            <label><input type="radio" name="q05" value="4">4</label>
+            <label><input type="radio" name="q05" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category" aria-labelledby="cat-space">
+        <h2 id="cat-space">Personal Space &amp; Daily Boundaries</h2>
+
+        <div class="question">
+          <label class="q-label" for="q06_na">I need to be able to take alone time without having to renegotiate it
+            every time.</label>
+          <div class="options">
+            <label><input id="q06_na" type="radio" name="q06" value="" checked>N/A</label>
+            <label><input type="radio" name="q06" value="1">1</label>
+            <label><input type="radio" name="q06" value="2">2</label>
+            <label><input type="radio" name="q06" value="3">3</label>
+            <label><input type="radio" name="q06" value="4">4</label>
+            <label><input type="radio" name="q06" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q07_na">I want clear boundaries around who can sleep in a star's bed or private
+            room.</label>
+          <div class="options">
+            <label><input id="q07_na" type="radio" name="q07" value="" checked>N/A</label>
+            <label><input type="radio" name="q07" value="1">1</label>
+            <label><input type="radio" name="q07" value="2">2</label>
+            <label><input type="radio" name="q07" value="3">3</label>
+            <label><input type="radio" name="q07" value="4">4</label>
+            <label><input type="radio" name="q07" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q08_na">I feel restricted when people expect immediate replies to
+            messages.</label>
+          <div class="options">
+            <label><input id="q08_na" type="radio" name="q08" value="" checked>N/A</label>
+            <label><input type="radio" name="q08" value="1">1</label>
+            <label><input type="radio" name="q08" value="2">2</label>
+            <label><input type="radio" name="q08" value="3">3</label>
+            <label><input type="radio" name="q08" value="4">4</label>
+            <label><input type="radio" name="q08" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q09_na">I want permission-seeking before someone shares my personal routines with
+            others.</label>
+          <div class="options">
+            <label><input id="q09_na" type="radio" name="q09" value="" checked>N/A</label>
+            <label><input type="radio" name="q09" value="1">1</label>
+            <label><input type="radio" name="q09" value="2">2</label>
+            <label><input type="radio" name="q09" value="3">3</label>
+            <label><input type="radio" name="q09" value="4">4</label>
+            <label><input type="radio" name="q09" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q10_na">I want to decide which parts of my life are shared between stars and which
+            parts stay separate.</label>
+          <div class="options">
+            <label><input id="q10_na" type="radio" name="q10" value="" checked>N/A</label>
+            <label><input type="radio" name="q10" value="1">1</label>
+            <label><input type="radio" name="q10" value="2">2</label>
+            <label><input type="radio" name="q10" value="3">3</label>
+            <label><input type="radio" name="q10" value="4">4</label>
+            <label><input type="radio" name="q10" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category" aria-labelledby="cat-boundary-share">
+        <h2 id="cat-boundary-share">Communication &amp; Boundary Sharing</h2>
+
+        <div class="question">
+          <label class="q-label" for="q11_na">I want control over which of my boundaries can be shared with people
+            outside the relationship.</label>
+          <div class="options">
+            <label><input id="q11_na" type="radio" name="q11" value="" checked>N/A</label>
+            <label><input type="radio" name="q11" value="1">1</label>
+            <label><input type="radio" name="q11" value="2">2</label>
+            <label><input type="radio" name="q11" value="3">3</label>
+            <label><input type="radio" name="q11" value="4">4</label>
+            <label><input type="radio" name="q11" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q12_na">I want to hear about a boundary change before it is shared with other
+            people.</label>
+          <div class="options">
+            <label><input id="q12_na" type="radio" name="q12" value="" checked>N/A</label>
+            <label><input type="radio" name="q12" value="1">1</label>
+            <label><input type="radio" name="q12" value="2">2</label>
+            <label><input type="radio" name="q12" value="3">3</label>
+            <label><input type="radio" name="q12" value="4">4</label>
+            <label><input type="radio" name="q12" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q13_na">I want explicit consent before private conflict details about me are
+            shared.</label>
+          <div class="options">
+            <label><input id="q13_na" type="radio" name="q13" value="" checked>N/A</label>
+            <label><input type="radio" name="q13" value="1">1</label>
+            <label><input type="radio" name="q13" value="2">2</label>
+            <label><input type="radio" name="q13" value="3">3</label>
+            <label><input type="radio" name="q13" value="4">4</label>
+            <label><input type="radio" name="q13" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q14_na">I am comfortable naming a boundary even when I expect
+            disagreement.</label>
+          <div class="options">
+            <label><input id="q14_na" type="radio" name="q14" value="" checked>N/A</label>
+            <label><input type="radio" name="q14" value="1">1</label>
+            <label><input type="radio" name="q14" value="2">2</label>
+            <label><input type="radio" name="q14" value="3">3</label>
+            <label><input type="radio" name="q14" value="4">4</label>
+            <label><input type="radio" name="q14" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q15_na">I prefer practical updates over detailed storytelling about other dates or
+            connections.</label>
+          <div class="options">
+            <label><input id="q15_na" type="radio" name="q15" value="" checked>N/A</label>
+            <label><input type="radio" name="q15" value="1">1</label>
+            <label><input type="radio" name="q15" value="2">2</label>
+            <label><input type="radio" name="q15" value="3">3</label>
+            <label><input type="radio" name="q15" value="4">4</label>
+            <label><input type="radio" name="q15" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category" aria-labelledby="cat-time">
+        <h2 id="cat-time">Time &amp; Availability</h2>
+
+        <div class="question">
+          <label class="q-label" for="q16_na">I feel stressed when plans with me are changed at the last minute.</label>
+          <div class="options">
+            <label><input id="q16_na" type="radio" name="q16" value="" checked>N/A</label>
+            <label><input type="radio" name="q16" value="1">1</label>
+            <label><input type="radio" name="q16" value="2">2</label>
+            <label><input type="radio" name="q16" value="3">3</label>
+            <label><input type="radio" name="q16" value="4">4</label>
+            <label><input type="radio" name="q16" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q17_na">I prefer to schedule dedicated time at least a few days in
+            advance.</label>
+          <div class="options">
+            <label><input id="q17_na" type="radio" name="q17" value="" checked>N/A</label>
+            <label><input type="radio" name="q17" value="1">1</label>
+            <label><input type="radio" name="q17" value="2">2</label>
+            <label><input type="radio" name="q17" value="3">3</label>
+            <label><input type="radio" name="q17" value="4">4</label>
+            <label><input type="radio" name="q17" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q18_na">I am comfortable with spontaneous overnights when they fit my current
+            capacity.</label>
+          <div class="options">
+            <label><input id="q18_na" type="radio" name="q18" value="" checked>N/A</label>
+            <label><input type="radio" name="q18" value="1">1</label>
+            <label><input type="radio" name="q18" value="2">2</label>
+            <label><input type="radio" name="q18" value="3">3</label>
+            <label><input type="radio" name="q18" value="4">4</label>
+            <label><input type="radio" name="q18" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q19_na">I want regular check-ins about how available I currently am.</label>
+          <div class="options">
+            <label><input id="q19_na" type="radio" name="q19" value="" checked>N/A</label>
+            <label><input type="radio" name="q19" value="1">1</label>
+            <label><input type="radio" name="q19" value="2">2</label>
+            <label><input type="radio" name="q19" value="3">3</label>
+            <label><input type="radio" name="q19" value="4">4</label>
+            <label><input type="radio" name="q19" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q20_na">I need advance notice before someone expects me to join a plan as
+            emotional support.</label>
+          <div class="options">
+            <label><input id="q20_na" type="radio" name="q20" value="" checked>N/A</label>
+            <label><input type="radio" name="q20" value="1">1</label>
+            <label><input type="radio" name="q20" value="2">2</label>
+            <label><input type="radio" name="q20" value="3">3</label>
+            <label><input type="radio" name="q20" value="4">4</label>
+            <label><input type="radio" name="q20" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category" aria-labelledby="cat-labels">
+        <h2 id="cat-labels">Labels, Naming &amp; Social Meaning</h2>
+
+        <div class="question">
+          <label class="q-label" for="q21_na">I prefer to decide labels slowly rather than assign them early for social
+            clarity.</label>
+          <div class="options">
+            <label><input id="q21_na" type="radio" name="q21" value="" checked>N/A</label>
+            <label><input type="radio" name="q21" value="1">1</label>
+            <label><input type="radio" name="q21" value="2">2</label>
+            <label><input type="radio" name="q21" value="3">3</label>
+            <label><input type="radio" name="q21" value="4">4</label>
+            <label><input type="radio" name="q21" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q22_na">I want my chosen label for a connection to be respected by everyone in the
+            network.</label>
+          <div class="options">
+            <label><input id="q22_na" type="radio" name="q22" value="" checked>N/A</label>
+            <label><input type="radio" name="q22" value="1">1</label>
+            <label><input type="radio" name="q22" value="2">2</label>
+            <label><input type="radio" name="q22" value="3">3</label>
+            <label><input type="radio" name="q22" value="4">4</label>
+            <label><input type="radio" name="q22" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q23_na">I feel uneasy when outsiders push us to use labels that do not fit
+            us.</label>
+          <div class="options">
+            <label><input id="q23_na" type="radio" name="q23" value="" checked>N/A</label>
+            <label><input type="radio" name="q23" value="1">1</label>
+            <label><input type="radio" name="q23" value="2">2</label>
+            <label><input type="radio" name="q23" value="3">3</label>
+            <label><input type="radio" name="q23" value="4">4</label>
+            <label><input type="radio" name="q23" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q24_na">I prefer introducing people by name and context rather than rank-like
+            labels.</label>
+          <div class="options">
+            <label><input id="q24_na" type="radio" name="q24" value="" checked>N/A</label>
+            <label><input type="radio" name="q24" value="1">1</label>
+            <label><input type="radio" name="q24" value="2">2</label>
+            <label><input type="radio" name="q24" value="3">3</label>
+            <label><input type="radio" name="q24" value="4">4</label>
+            <label><input type="radio" name="q24" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q25_na">I want agreement before my role in someone's life is presented
+            publicly.</label>
+          <div class="options">
+            <label><input id="q25_na" type="radio" name="q25" value="" checked>N/A</label>
+            <label><input type="radio" name="q25" value="1">1</label>
+            <label><input type="radio" name="q25" value="2">2</label>
+            <label><input type="radio" name="q25" value="3">3</label>
+            <label><input type="radio" name="q25" value="4">4</label>
+            <label><input type="radio" name="q25" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category" aria-labelledby="cat-care">
+        <h2 id="cat-care">Emotional Capacity, Care &amp; Support</h2>
+
+        <div class="question">
+          <label class="q-label" for="q26_na">I can offer care to others without taking responsibility for their
+            emotional regulation.</label>
+          <div class="options">
+            <label><input id="q26_na" type="radio" name="q26" value="" checked>N/A</label>
+            <label><input type="radio" name="q26" value="1">1</label>
+            <label><input type="radio" name="q26" value="2">2</label>
+            <label><input type="radio" name="q26" value="3">3</label>
+            <label><input type="radio" name="q26" value="4">4</label>
+            <label><input type="radio" name="q26" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q27_na">I need breaks from emotionally intense conversations to stay
+            grounded.</label>
+          <div class="options">
+            <label><input id="q27_na" type="radio" name="q27" value="" checked>N/A</label>
+            <label><input type="radio" name="q27" value="1">1</label>
+            <label><input type="radio" name="q27" value="2">2</label>
+            <label><input type="radio" name="q27" value="3">3</label>
+            <label><input type="radio" name="q27" value="4">4</label>
+            <label><input type="radio" name="q27" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q28_na">I am comfortable asking for support when I notice my own capacity is
+            low.</label>
+          <div class="options">
+            <label><input id="q28_na" type="radio" name="q28" value="" checked>N/A</label>
+            <label><input type="radio" name="q28" value="1">1</label>
+            <label><input type="radio" name="q28" value="2">2</label>
+            <label><input type="radio" name="q28" value="3">3</label>
+            <label><input type="radio" name="q28" value="4">4</label>
+            <label><input type="radio" name="q28" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q29_na">I feel overloaded when I am expected to process every issue
+            immediately.</label>
+          <div class="options">
+            <label><input id="q29_na" type="radio" name="q29" value="" checked>N/A</label>
+            <label><input type="radio" name="q29" value="1">1</label>
+            <label><input type="radio" name="q29" value="2">2</label>
+            <label><input type="radio" name="q29" value="3">3</label>
+            <label><input type="radio" name="q29" value="4">4</label>
+            <label><input type="radio" name="q29" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q30_na">I have a clear boundary for how much ongoing care I can sustainably
+            provide.</label>
+          <div class="options">
+            <label><input id="q30_na" type="radio" name="q30" value="" checked>N/A</label>
+            <label><input type="radio" name="q30" value="1">1</label>
+            <label><input type="radio" name="q30" value="2">2</label>
+            <label><input type="radio" name="q30" value="3">3</label>
+            <label><input type="radio" name="q30" value="4">4</label>
+            <label><input type="radio" name="q30" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category" aria-labelledby="cat-physical">
+        <h2 id="cat-physical">Physical &amp; Intimacy Boundaries</h2>
+
+        <div class="question">
+          <label class="q-label" for="q31_na">I want sexual-health expectations to be discussed instead of
+            assumed.</label>
+          <div class="options">
+            <label><input id="q31_na" type="radio" name="q31" value="" checked>N/A</label>
+            <label><input type="radio" name="q31" value="1">1</label>
+            <label><input type="radio" name="q31" value="2">2</label>
+            <label><input type="radio" name="q31" value="3">3</label>
+            <label><input type="radio" name="q31" value="4">4</label>
+            <label><input type="radio" name="q31" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q32_na">I am comfortable with stars having different forms of physical intimacy
+            with different people.</label>
+          <div class="options">
+            <label><input id="q32_na" type="radio" name="q32" value="" checked>N/A</label>
+            <label><input type="radio" name="q32" value="1">1</label>
+            <label><input type="radio" name="q32" value="2">2</label>
+            <label><input type="radio" name="q32" value="3">3</label>
+            <label><input type="radio" name="q32" value="4">4</label>
+            <label><input type="radio" name="q32" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q33_na">I want a shared process for deciding which intimacy-related boundary
+            changes are private and which should be communicated onward.</label>
+          <div class="options">
+            <label><input id="q33_na" type="radio" name="q33" value="" checked>N/A</label>
+            <label><input type="radio" name="q33" value="1">1</label>
+            <label><input type="radio" name="q33" value="2">2</label>
+            <label><input type="radio" name="q33" value="3">3</label>
+            <label><input type="radio" name="q33" value="4">4</label>
+            <label><input type="radio" name="q33" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q34_na">I am comfortable with affection between stars in shared spaces when I am
+            present.</label>
+          <div class="options">
+            <label><input id="q34_na" type="radio" name="q34" value="" checked>N/A</label>
+            <label><input type="radio" name="q34" value="1">1</label>
+            <label><input type="radio" name="q34" value="2">2</label>
+            <label><input type="radio" name="q34" value="3">3</label>
+            <label><input type="radio" name="q34" value="4">4</label>
+            <label><input type="radio" name="q34" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q35_na">I prefer keeping details of my own sexual experiences private unless
+            directly relevant.</label>
+          <div class="options">
+            <label><input id="q35_na" type="radio" name="q35" value="" checked>N/A</label>
+            <label><input type="radio" name="q35" value="1">1</label>
+            <label><input type="radio" name="q35" value="2">2</label>
+            <label><input type="radio" name="q35" value="3">3</label>
+            <label><input type="radio" name="q35" value="4">4</label>
+            <label><input type="radio" name="q35" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category" aria-labelledby="cat-events">
+        <h2 id="cat-events">Events, Parties &amp; Presence</h2>
+
+        <div class="question">
+          <label class="q-label" for="q36_na">I am comfortable attending social events where multiple stars and ex-stars
+            are present.</label>
+          <div class="options">
+            <label><input id="q36_na" type="radio" name="q36" value="" checked>N/A</label>
+            <label><input type="radio" name="q36" value="1">1</label>
+            <label><input type="radio" name="q36" value="2">2</label>
+            <label><input type="radio" name="q36" value="3">3</label>
+            <label><input type="radio" name="q36" value="4">4</label>
+            <label><input type="radio" name="q36" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q37_na">I prefer discussing likely social overlaps before committing to an
+            event.</label>
+          <div class="options">
+            <label><input id="q37_na" type="radio" name="q37" value="" checked>N/A</label>
+            <label><input type="radio" name="q37" value="1">1</label>
+            <label><input type="radio" name="q37" value="2">2</label>
+            <label><input type="radio" name="q37" value="3">3</label>
+            <label><input type="radio" name="q37" value="4">4</label>
+            <label><input type="radio" name="q37" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q38_na">I am okay arriving or leaving separately from someone I came with.</label>
+          <div class="options">
+            <label><input id="q38_na" type="radio" name="q38" value="" checked>N/A</label>
+            <label><input type="radio" name="q38" value="1">1</label>
+            <label><input type="radio" name="q38" value="2">2</label>
+            <label><input type="radio" name="q38" value="3">3</label>
+            <label><input type="radio" name="q38" value="4">4</label>
+            <label><input type="radio" name="q38" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q39_na">If I leave a party, I feel comfortable with a star making out with someone
+            else afterward.</label>
+          <div class="options">
+            <label><input id="q39_na" type="radio" name="q39" value="" checked>N/A</label>
+            <label><input type="radio" name="q39" value="1">1</label>
+            <label><input type="radio" name="q39" value="2">2</label>
+            <label><input type="radio" name="q39" value="3">3</label>
+            <label><input type="radio" name="q39" value="4">4</label>
+            <label><input type="radio" name="q39" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q40_na">I prefer to clarify whether boundaries still apply when one person has
+            already left a shared space.</label>
+          <div class="options">
+            <label><input id="q40_na" type="radio" name="q40" value="" checked>N/A</label>
+            <label><input type="radio" name="q40" value="1">1</label>
+            <label><input type="radio" name="q40" value="2">2</label>
+            <label><input type="radio" name="q40" value="3">3</label>
+            <label><input type="radio" name="q40" value="4">4</label>
+            <label><input type="radio" name="q40" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category" aria-labelledby="cat-commitments">
+        <h2 id="cat-commitments">Commitments, Escalation &amp; Entanglement</h2>
+
+        <div class="question">
+          <label class="q-label" for="q41_na">I feel pressured when milestones are treated as automatic next
+            steps.</label>
+          <div class="options">
+            <label><input id="q41_na" type="radio" name="q41" value="" checked>N/A</label>
+            <label><input type="radio" name="q41" value="1">1</label>
+            <label><input type="radio" name="q41" value="2">2</label>
+            <label><input type="radio" name="q41" value="3">3</label>
+            <label><input type="radio" name="q41" value="4">4</label>
+            <label><input type="radio" name="q41" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q42_na">I prefer commitments to be revisited periodically instead of assumed
+            permanent.</label>
+          <div class="options">
+            <label><input id="q42_na" type="radio" name="q42" value="" checked>N/A</label>
+            <label><input type="radio" name="q42" value="1">1</label>
+            <label><input type="radio" name="q42" value="2">2</label>
+            <label><input type="radio" name="q42" value="3">3</label>
+            <label><input type="radio" name="q42" value="4">4</label>
+            <label><input type="radio" name="q42" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q43_na">I am comfortable with long-term commitments that do not involve
+            cohabitation.</label>
+          <div class="options">
+            <label><input id="q43_na" type="radio" name="q43" value="" checked>N/A</label>
+            <label><input type="radio" name="q43" value="1">1</label>
+            <label><input type="radio" name="q43" value="2">2</label>
+            <label><input type="radio" name="q43" value="3">3</label>
+            <label><input type="radio" name="q43" value="4">4</label>
+            <label><input type="radio" name="q43" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q44_na">I need explicit consent before financial, housing, or logistical
+            entanglement increases.</label>
+          <div class="options">
+            <label><input id="q44_na" type="radio" name="q44" value="" checked>N/A</label>
+            <label><input type="radio" name="q44" value="1">1</label>
+            <label><input type="radio" name="q44" value="2">2</label>
+            <label><input type="radio" name="q44" value="3">3</label>
+            <label><input type="radio" name="q44" value="4">4</label>
+            <label><input type="radio" name="q44" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q45_na">I am comfortable naming limits around entanglement even in deeply caring
+            relationships.</label>
+          <div class="options">
+            <label><input id="q45_na" type="radio" name="q45" value="" checked>N/A</label>
+            <label><input type="radio" name="q45" value="1">1</label>
+            <label><input type="radio" name="q45" value="2">2</label>
+            <label><input type="radio" name="q45" value="3">3</label>
+            <label><input type="radio" name="q45" value="4">4</label>
+            <label><input type="radio" name="q45" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category" aria-labelledby="cat-edge">
+        <h2 id="cat-edge">Boundary Propagation &amp; Edge Cases</h2>
+
+        <div class="question">
+          <label class="q-label" for="q51_na">I want a boundary about shared space to still matter after one person
+            leaves the room or party.</label>
+          <div class="options">
+            <label><input id="q51_na" type="radio" name="q51" value="" checked>N/A</label>
+            <label><input type="radio" name="q51" value="1">1</label>
+            <label><input type="radio" name="q51" value="2">2</label>
+            <label><input type="radio" name="q51" value="3">3</label>
+            <label><input type="radio" name="q51" value="4">4</label>
+            <label><input type="radio" name="q51" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q52_na">I am comfortable with someone using my bed or room only when the relevant
+            people have clearly agreed.</label>
+          <div class="options">
+            <label><input id="q52_na" type="radio" name="q52" value="" checked>N/A</label>
+            <label><input type="radio" name="q52" value="1">1</label>
+            <label><input type="radio" name="q52" value="2">2</label>
+            <label><input type="radio" name="q52" value="3">3</label>
+            <label><input type="radio" name="q52" value="4">4</label>
+            <label><input type="radio" name="q52" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q53_na">I want it to be clear whether a boundary is about my presence or about the
+            situation itself.</label>
+          <div class="options">
+            <label><input id="q53_na" type="radio" name="q53" value="" checked>N/A</label>
+            <label><input type="radio" name="q53" value="1">1</label>
+            <label><input type="radio" name="q53" value="2">2</label>
+            <label><input type="radio" name="q53" value="3">3</label>
+            <label><input type="radio" name="q53" value="4">4</label>
+            <label><input type="radio" name="q53" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q54_na">I am comfortable with a star continuing intimate contact after I leave
+            only when that was already understood.</label>
+          <div class="options">
+            <label><input id="q54_na" type="radio" name="q54" value="" checked>N/A</label>
+            <label><input type="radio" name="q54" value="1">1</label>
+            <label><input type="radio" name="q54" value="2">2</label>
+            <label><input type="radio" name="q54" value="3">3</label>
+            <label><input type="radio" name="q54" value="4">4</label>
+            <label><input type="radio" name="q54" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q55_na">I need it to be acceptable to step back when caring would overextend
+            me.</label>
+          <div class="options">
+            <label><input id="q55_na" type="radio" name="q55" value="" checked>N/A</label>
+            <label><input type="radio" name="q55" value="1">1</label>
+            <label><input type="radio" name="q55" value="2">2</label>
+            <label><input type="radio" name="q55" value="3">3</label>
+            <label><input type="radio" name="q55" value="4">4</label>
+            <label><input type="radio" name="q55" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category" aria-labelledby="cat-network">
+        <h2 id="cat-network">Network Dynamics with Other Important People</h2>
+
+        <div class="question">
+          <label class="q-label" for="q46_na">I like occasional friendly contact with ex-stars or other people in the
+            wider network.</label>
+          <div class="options">
+            <label><input id="q46_na" type="radio" name="q46" value="" checked>N/A</label>
+            <label><input type="radio" name="q46" value="1">1</label>
+            <label><input type="radio" name="q46" value="2">2</label>
+            <label><input type="radio" name="q46" value="3">3</label>
+            <label><input type="radio" name="q46" value="4">4</label>
+            <label><input type="radio" name="q46" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q47_na">I feel more secure when I know basic context about other close connections
+            in the network.</label>
+          <div class="options">
+            <label><input id="q47_na" type="radio" name="q47" value="" checked>N/A</label>
+            <label><input type="radio" name="q47" value="1">1</label>
+            <label><input type="radio" name="q47" value="2">2</label>
+            <label><input type="radio" name="q47" value="3">3</label>
+            <label><input type="radio" name="q47" value="4">4</label>
+            <label><input type="radio" name="q47" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q48_na">I prefer parallel structures where people in the same network do not need
+            direct contact.</label>
+          <div class="options">
+            <label><input id="q48_na" type="radio" name="q48" value="" checked>N/A</label>
+            <label><input type="radio" name="q48" value="1">1</label>
+            <label><input type="radio" name="q48" value="2">2</label>
+            <label><input type="radio" name="q48" value="3">3</label>
+            <label><input type="radio" name="q48" value="4">4</label>
+            <label><input type="radio" name="q48" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q49_na">I want direct communication when tensions in the wider network start to
+            affect me.</label>
+          <div class="options">
+            <label><input id="q49_na" type="radio" name="q49" value="" checked>N/A</label>
+            <label><input type="radio" name="q49" value="1">1</label>
+            <label><input type="radio" name="q49" value="2">2</label>
+            <label><input type="radio" name="q49" value="3">3</label>
+            <label><input type="radio" name="q49" value="4">4</label>
+            <label><input type="radio" name="q49" value="5">5</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q50_na">I am comfortable not meeting other important people unless everyone
+            actually wants contact.</label>
+          <div class="options">
+            <label><input id="q50_na" type="radio" name="q50" value="" checked>N/A</label>
+            <label><input type="radio" name="q50" value="1">1</label>
+            <label><input type="radio" name="q50" value="2">2</label>
+            <label><input type="radio" name="q50" value="3">3</label>
+            <label><input type="radio" name="q50" value="4">4</label>
+            <label><input type="radio" name="q50" value="5">5</label>
+          </div>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="submit">Submit Survey</button>
+      </div>
+    </form>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const scaleToolbar = document.getElementById('scaleToolbar');
+
+      const showScaleToolbar = () => {
+        if (!scaleToolbar) {
+          return;
+        }
+
+        scaleToolbar.classList.add('visible');
+      };
+
+      document.querySelectorAll('input[type="radio"][name^="q"][value="1"], input[type="radio"][name^="q"][value="2"], input[type="radio"][name^="q"][value="3"], input[type="radio"][name^="q"][value="4"], input[type="radio"][name^="q"][value="5"]').forEach((radio) => {
+        radio.addEventListener('change', showScaleToolbar);
+      });
+
+      document.querySelectorAll('.question').forEach((question) => {
+        const firstRadio = question.querySelector('input[type="radio"][name^="q"]');
+        const questionLabel = question.querySelector('.q-label');
+        if (!firstRadio) {
+          return;
+        }
+
+        if (!questionLabel) {
+          return;
+        }
+
+        const questionNumber = firstRadio.name.slice(1);
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'discussion-toggle';
+        toggle.setAttribute('aria-pressed', 'false');
+        toggle.textContent = 'Tag for further discussion';
+
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = `d${questionNumber}`;
+        hidden.value = '0';
+
+        toggle.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          const active = toggle.getAttribute('aria-pressed') === 'true';
+          const next = !active;
+          toggle.setAttribute('aria-pressed', next ? 'true' : 'false');
+          hidden.value = next ? '1' : '0';
+        });
+
+        question.appendChild(hidden);
+        questionLabel.appendChild(toggle);
+      });
+    });
+  </script>
+</body>
+
+</html>
