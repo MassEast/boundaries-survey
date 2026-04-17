@@ -1,6 +1,7 @@
 # Anonymous Boundary Survey
 
-Small anonymous web survey for boundary reflection in RA and non-monogamy contexts.
+Small anonymous web survey for self-reflection on personal boundaries in RA and non-monogamy contexts.
+It can also be used with a small group to collect anonymized answers for later analysis, discussion points, reading groups, or similar collective reflection.
 
 ## What This Project Is
 - Static survey frontend in `index.html`
