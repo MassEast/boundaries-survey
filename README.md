@@ -2,6 +2,7 @@
 
 Small anonymous web survey for self-reflection on personal boundaries in RA and non-monogamy contexts.
 It can also be used with a small group to collect anonymized answers for later analysis, discussion points, reading groups, or similar collective reflection.
+Implementation notes were captured in `plan.md` during development.
 
 ## What This Project Is
 - Static survey frontend in `index.html`
