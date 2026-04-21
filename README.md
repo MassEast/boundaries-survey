@@ -14,8 +14,8 @@ It can also be used with a small group to collect anonymized answers for later a
 
 ## Data Model
 Each submission writes one CSV row with:
-- `q01` ... `q55`: Likert answers (`1..5`) or empty if unanswered
-- `d01` ... `d55`: discussion tags (`1` = tagged, `0` = not tagged)
+- `q01` ... `q54`: Likert answers (`1..5`) or empty if unanswered
+- `d01` ... `d54`: discussion tags (`1` = tagged, `0` = not tagged)
 
 The CSV header is auto-created on first submission.
 

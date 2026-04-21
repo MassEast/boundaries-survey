@@ -7,11 +7,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $questionIds = [];
-for ($i = 1; $i <= 55; $i++) {
+for ($i = 1; $i <= 54; $i++) {
     $questionIds[] = sprintf('q%02d', $i);
 }
 
-for ($i = 1; $i <= 55; $i++) {
+for ($i = 1; $i <= 54; $i++) {
     $questionIds[] = sprintf('d%02d', $i);
 }
 
